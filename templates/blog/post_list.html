@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load latest_tag %}
+{% block tiltle %}MY BLOG{% endblock %}
+{% block content %}
+    <div class="container">
+<body class="over">
+<h1 class="headings">MY POSTS</h1>
+<div class="row">
+    <div class="col-lg-4 col-lg-offset-6">
+        <h3 class="card-header">Side Bar</h3>
+        <h5 class="card-text">Latest Posts</h5>
+        {% latest_post %}
+            {{ post.title }}
+
+        {% total_count %}
+
+    </div>
+
+
+<p></p>
+<div class="col-lg-8">
+{% for post in posts %}
+    {% for tag in post.tags.all %}
+    <h4 class="text">{{ post.title }} <span class="badge badge-secondary"><small>{{ tag.name }}</small></span></h4></h4>
+    {% endfor %}
+    <p class="card-text">Posted by: {{ post.author }}</p>
+            {% if post.cover %}
+        <img class="card-img-top" src="{{ post.cover.url}}" alt="">
+            {% else %}
+            {% endif %}
+    <p class="card-text">Comments: <span class="badge badge-primary">{{ post.comments.count }}</span> | Views: {{ post.blog_views }}
+ </p>
+    <p>{{ post.body|truncatewords:50 }}</p>
+    <ul class="list-inline">
+    <li class="list-inline-item"><a class="btn btn-success" href="{% url 'detail' post.pk %}">Read More</a></li>
+        {% if user.is_authenticated and user.is_superuser %}
+    <li class="list-inline-item"><a class="btn btn-success" href="{% url 'edit' post.pk %}">Edit Post</a></li>
+    <li class="list-inline-item"><a class="btn btn-success" href="{% url 'delete' post.pk %}">Delete Post</a></li><p></p>
+    {% endif %}
+    </ul>
+    {% empty %}
+    <p class="text-center text-danger">You have no Posts at this moment</p
+{% endfor %}
+
+
+</div>
+
+</div>
+</body>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% for post in posts %}
+        <ul class="list-unstyled text-center">
+        <li><a href="{% url 'detail' post.pk %}">{{ post.title }}</a></li>
+        </ul>
+        {% empty %}
+        No Posts Associated to this Topics
+    {% endfor %}
+    </div>
+{% endblock %}

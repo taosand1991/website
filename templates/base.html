@@ -1,0 +1,89 @@
+
+{% load static %}
+  <head>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">BLOG</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+        {% with url_name=request.resolver_match.url_name %}
+
+      <li class="nav-item active {% if url_name == 'post_list' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'post_list' %}">Home</a>
+      </li>
+            {% for category in categories  %}
+        <li  class="nav-item"><a class="nav-link" href="{% url 'category' category %}">{{ category.name }}</a></li>
+    {% endfor %}
+      <li class="nav-item {% if url_name == 'about' %}active{% endif %}">
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+      </li>
+    </ul>
+      <ul class="navbar-nav float-right">
+          {% if user.is_authenticated %}
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile'   %}">Hi !({{ user.username }})<span class="fa fa-user"></span></a>
+          </li>
+        <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+          </li>
+              </li>
+              <li class="nav-item {% if url_name == 'create' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'create' %}">Create Post &nbsp;<span class="fa fa-plus"></span></a>
+          </li>
+              {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Log In</a>
+          </li>
+              <li class="nav-item {% if url_name == 'register' %}active{% endif %}">
+              <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+          {% endif %}
+      </ul>
+  {% endwith %}
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/5.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+      <link rel="stylesheet" href="{% static 'css/master.css' %}">
+    <title>{% block tiltle %}{% endblock %}</title>
+  </head>
+{% if messages %}
+    {% for message in messages %}
+    {% if message.tags %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">{% endif %}
+         {{ message }}
+    {% endfor %}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+</div>
+        {% endif %}
+
+
+  <body>
+    {% block content %}
+    {% endblock %}
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  </body>
+</html>
